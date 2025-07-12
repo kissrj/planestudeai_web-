@@ -133,29 +133,14 @@ class DashboardScaffold extends StatelessWidget {
           ),
           // Conteúdo principal
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  color: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 24),
-                  child: Center(
-                    child: Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 900),
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: child,
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(32.0),
-                    child: child,
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ],

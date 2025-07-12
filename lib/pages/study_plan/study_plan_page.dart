@@ -338,8 +338,8 @@ class _StudyPlanPageState extends State<StudyPlanPage>
       scrollDirection: Axis.horizontal,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: SizedBox(
-          width: 1100,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 800),
           child: buildWeeklyGrid(),
         ),
       ),
