@@ -17,6 +17,7 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pricingSectionKey = GlobalKey();
     final features = [
       Feature(
         title: "Cronograma Automático",
@@ -106,12 +107,12 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80),
-        child: const Header(),
+        child: Header(pricingSectionKey: pricingSectionKey),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const HeroSection(),
+            HeroSection(pricingSectionKey: pricingSectionKey),
             FeaturesSection(
               title: "Por que usar o PlanEstudeAI?",
               subtitle: "Recursos exclusivos para otimizar seus estudos",
@@ -128,11 +129,12 @@ class LandingPage extends StatelessWidget {
               testimonials: testimonials,
             ),
             PricingTableSection(
+              key: pricingSectionKey,
               title: "Planos e preços",
               subtitle: "Escolha o plano perfeito para sua preparação",
               plans: plans,
             ),
-            const CtaSection(),
+            CtaSection(),
             const Footer(),
           ],
         ),

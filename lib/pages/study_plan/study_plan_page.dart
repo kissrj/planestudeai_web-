@@ -334,15 +334,19 @@ class _StudyPlanPageState extends State<StudyPlanPage>
   }
 
   Widget _buildWeeklyView() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 800),
-          child: buildWeeklyGrid(),
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: SizedBox(
+              width: constraints.maxWidth,
+              child: buildWeeklyGrid(),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -499,63 +503,69 @@ class _StudyPlanPageState extends State<StudyPlanPage>
         final day = filteredStudyPlan.keys.elementAt(index);
         final sessions = filteredStudyPlan[day]!;
 
-        return Card(
-          margin: const EdgeInsets.only(bottom: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  day,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        return ConstrainedBox(
+          constraints: BoxConstraints(minWidth: 240, maxWidth: 360),
+          child: Card(
+            margin: const EdgeInsets.only(bottom: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(MediaQuery.of(context).size.width < 500 ? 8 : 16),
+                  child: Text(
+                    day,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: sessions.length,
-                itemBuilder: (context, sessionIndex) {
-                  final session = sessions[sessionIndex];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: session["discipline"]["color"].withOpacity(0.1),
-                        border: Border.all(color: session["discipline"]["color"]),
-                        borderRadius: BorderRadius.circular(8),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: sessions.length,
+                  itemBuilder: (context, sessionIndex) {
+                    final session = sessions[sessionIndex];
+                    return Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width < 500 ? 8 : 16,
+                        vertical: MediaQuery.of(context).size.width < 500 ? 4 : 8,
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  session["discipline"]["name"],
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  session["topic"],
-                                  style: const TextStyle(color: Colors.grey, fontSize: 12),
-                                ),
-                              ],
+                      child: Container(
+                        padding: EdgeInsets.all(MediaQuery.of(context).size.width < 500 ? 8 : 16),
+                        decoration: BoxDecoration(
+                          color: session["discipline"]["color"].withOpacity(0.1),
+                          border: Border.all(color: session["discipline"]["color"]),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    session["discipline"]["name"],
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    session["topic"],
+                                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Text(
-                            "${session["startTime"]} - ${session["endTime"]}",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                            Text(
+                              "${session["startTime"]} - ${session["endTime"]}",
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
-            ],
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },

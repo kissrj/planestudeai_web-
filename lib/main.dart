@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Inter',
       ),
-      home: const LandingPage(),
+      home: LandingPage(),
       routes: {
         '/login': (context) => const LoginPage(initialTab: 0),
         '/signup': (context) => const LoginPage(initialTab: 1),

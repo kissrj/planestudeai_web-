@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import '../landing_page.dart';
 
 class HeroSection extends StatelessWidget {
-  const HeroSection({Key? key}) : super(key: key);
+  final GlobalKey? pricingSectionKey;
+  const HeroSection({Key? key, this.pricingSectionKey}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,9 @@ class HeroSection extends StatelessWidget {
                             runSpacing: 8,
                             children: [
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed('/signup');
+                                },
                                 style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                                   textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
@@ -52,7 +56,16 @@ class HeroSection extends StatelessWidget {
                                 child: const Text("Comece agora gratuitamente"),
                               ),
                               OutlinedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  final contextSection = pricingSectionKey?.currentContext;
+                                  if (contextSection != null) {
+                                    Scrollable.ensureVisible(
+                                      contextSection,
+                                      duration: const Duration(milliseconds: 500),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  }
+                                },
                                 style: OutlinedButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                                   textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
@@ -162,7 +175,9 @@ class HeroSection extends StatelessWidget {
                       runSpacing: 8,
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/signup');
+                          },
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                             textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
@@ -170,7 +185,16 @@ class HeroSection extends StatelessWidget {
                           child: const Text("Comece agora gratuitamente"),
                         ),
                         OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            final contextSection = pricingSectionKey?.currentContext;
+                            if (contextSection != null) {
+                              Scrollable.ensureVisible(
+                                contextSection,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.easeInOut,
+                              );
+                            }
+                          },
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                             textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),

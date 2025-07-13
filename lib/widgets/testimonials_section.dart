@@ -56,8 +56,8 @@ class TestimonialsSection extends StatelessWidget {
                     spacing: 24,
                     runSpacing: 24,
                     alignment: WrapAlignment.center,
-                    children: testimonials.map((testimonial) => SizedBox(
-                      width: cardWidth > 400 ? 400 : cardWidth,
+                    children: testimonials.map((testimonial) => ConstrainedBox(
+                      constraints: BoxConstraints(minWidth: 240, maxWidth: 400),
                       child: Material(
                         elevation: 2,
                         borderRadius: BorderRadius.circular(12),
@@ -67,7 +67,7 @@ class TestimonialsSection extends StatelessWidget {
                             border: Border.all(color: Colors.grey.shade100),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          padding: const EdgeInsets.all(24),
+                          padding: EdgeInsets.all(MediaQuery.of(context).size.width < 500 ? 12 : 24),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -75,15 +75,13 @@ class TestimonialsSection extends StatelessWidget {
                             children: [
                               const Icon(Icons.format_quote, color: Colors.blue, size: 32),
                               const SizedBox(height: 16),
-                              Flexible(
-                                child: Text(
-                                  testimonial.quote,
-                                  style: const TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 18,
-                                  ),
-                                  textAlign: TextAlign.center,
+                              Text(
+                                testimonial.quote,
+                                style: const TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 18,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 24),
                               Text(
@@ -92,13 +90,6 @@ class TestimonialsSection extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black87,
                                   fontSize: 16,
-                                ),
-                              ),
-                              Text(
-                                testimonial.role,
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14,
                                 ),
                               ),
                             ],

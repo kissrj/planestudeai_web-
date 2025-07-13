@@ -121,17 +121,20 @@ class _AccountPageState extends State<AccountPage> {
                 style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 24),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Wrap(
+                crossAxisAlignment: WrapCrossAlignment.start,
+                spacing: 16,
+                runSpacing: 16,
                 children: [
                   // Perfil
-                  Expanded(
+                  ConstrainedBox(
+                    constraints: BoxConstraints(minWidth: 240, maxWidth: 360),
                     child: Card(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       elevation: 0.5,
                       margin: const EdgeInsets.only(right: 16),
                       child: Padding(
-                        padding: const EdgeInsets.all(20),
+                        padding: EdgeInsets.all(MediaQuery.of(context).size.width < 500 ? 12 : 20),
                         child: Column(
                           children: [
                             CircleAvatar(
@@ -140,11 +143,12 @@ class _AccountPageState extends State<AccountPage> {
                               child: Text(
                                 userName.split(' ').map((n) => n[0]).join('').toUpperCase(),
                                 style: const TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             const SizedBox(height: 16),
-                            Text(userName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                            Text(userEmail, style: const TextStyle(color: Colors.grey)),
+                            Text(userName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18), overflow: TextOverflow.ellipsis),
+                            Text(userEmail, style: const TextStyle(color: Colors.grey), overflow: TextOverflow.ellipsis),
                             const SizedBox(height: 8),
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -158,6 +162,7 @@ class _AccountPageState extends State<AccountPage> {
                             Text(
                               'Conta criada em ${createdAt != null ? '${createdAt.day.toString().padLeft(2, '0')}/${createdAt.month.toString().padLeft(2, '0')}/${createdAt.year}' : 'N/A'}',
                               style: const TextStyle(fontSize: 13, color: Colors.grey),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
@@ -165,8 +170,9 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                   ),
                   // Formulários e assinatura
-                  Expanded(
-                    flex: 2,
+                  Container(
+                    width: 400,
+                    constraints: BoxConstraints(maxWidth: 400),
                     child: Column(
                       children: [
                         // Informações pessoais

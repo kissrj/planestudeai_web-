@@ -56,8 +56,8 @@ class FeaturesSection extends StatelessWidget {
                     spacing: 24,
                     runSpacing: 24,
                     alignment: WrapAlignment.center,
-                    children: features.map((feature) => SizedBox(
-                      width: cardWidth > 400 ? 400 : cardWidth,
+                    children: features.map((feature) => ConstrainedBox(
+                      constraints: BoxConstraints(minWidth: 240, maxWidth: 400),
                       child: Material(
                         elevation: 2,
                         borderRadius: BorderRadius.circular(12),
@@ -67,7 +67,7 @@ class FeaturesSection extends StatelessWidget {
                             border: Border.all(color: Colors.grey.shade100),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          padding: const EdgeInsets.all(24),
+                          padding: EdgeInsets.all(MediaQuery.of(context).size.width < 500 ? 12 : 24),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -84,13 +84,11 @@ class FeaturesSection extends StatelessWidget {
                                     ),
                               ),
                               const SizedBox(height: 8),
-                              Flexible(
-                                child: Text(
-                                  feature.description,
-                                  style: TextStyle(
-                                    color: Colors.grey[700],
-                                    fontSize: 16,
-                                  ),
+                              Text(
+                                feature.description,
+                                style: TextStyle(
+                                  color: Colors.grey[700],
+                                  fontSize: 16,
                                 ),
                               ),
                             ],

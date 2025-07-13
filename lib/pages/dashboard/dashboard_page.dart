@@ -96,8 +96,10 @@ class DashboardPage extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 24),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Wrap(
+                        spacing: 16,
+                        runSpacing: 8,
+                        alignment: WrapAlignment.center,
                         children: [
                           ElevatedButton.icon(
                             onPressed: () {},
@@ -109,15 +111,13 @@ class DashboardPage extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                             ),
                           ),
-                          const SizedBox(width: 16),
                           OutlinedButton.icon(
                             onPressed: null,
                             icon: const Icon(Icons.add_circle),
-                            label: Row(
-                              mainAxisSize: MainAxisSize.min,
+                            label: Wrap(
+                              spacing: 8,
                               children: [
                                 const Text('Criar Plano Manual'),
-                                const SizedBox(width: 8),
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(

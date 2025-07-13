@@ -33,66 +33,69 @@ class DashboardFeatureCard extends StatelessWidget {
     final defaultIconColor = iconColor ?? _getDefaultIconColor(title);
     final effectiveIconColor = isDisabled ? Colors.grey[400] : defaultIconColor;
 
-    return Card(
-      elevation: isDisabled ? 1 : 2,
-      color: isDisabled ? Colors.grey[50] : Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  icon,
-                  size: 20,
-                  color: effectiveIconColor,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
+    return ConstrainedBox(
+      constraints: BoxConstraints(minWidth: 240, maxWidth: 400),
+      child: Card(
+        elevation: isDisabled ? 1 : 2,
+        color: isDisabled ? Colors.grey[50] : Colors.white,
+        child: Padding(
+          padding: EdgeInsets.all(MediaQuery.of(context).size.width < 500 ? 12 : 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 8,
+                children: [
+                  Icon(
+                    icon,
+                    size: 20,
+                    color: effectiveIconColor,
+                  ),
+                  Text(
                     title,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: isDisabled ? Colors.grey[600] : Colors.grey[900],
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            if (description != null) ...[
-              Text(
-                description!,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: isDisabled ? Colors.grey[500] : Colors.grey[600],
-                ),
+                ],
               ),
               const SizedBox(height: 12),
+              if (description != null) ...[
+                Text(
+                  description!,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: isDisabled ? Colors.grey[500] : Colors.grey[600],
+                  ),
+                ),
+                const SizedBox(height: 12),
+              ],
+              SizedBox(
+                width: double.infinity,
+                child: isDisabled
+                    ? OutlinedButton(
+                        onPressed: null,
+                        child: Text(_getButtonText(title)),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.grey[400],
+                        ),
+                      )
+                    : OutlinedButton(
+                        onPressed: () {
+                          if (route != null) {
+                            Navigator.pushNamed(context, route!);
+                          }
+                        },
+                        child: Text(_getButtonText(title)),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: defaultIconColor,
+                        ),
+                      ),
+              ),
             ],
-            SizedBox(
-              width: double.infinity,
-              child: isDisabled
-                  ? OutlinedButton(
-                      onPressed: null,
-                      child: Text(_getButtonText(title)),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.grey[400],
-                      ),
-                    )
-                  : OutlinedButton(
-                      onPressed: () {
-                        if (route != null) {
-                          Navigator.pushNamed(context, route!);
-                        }
-                      },
-                      child: Text(_getButtonText(title)),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: defaultIconColor,
-                      ),
-                    ),
-            ),
-          ],
+          ),
         ),
       ),
     );

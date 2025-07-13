@@ -79,13 +79,15 @@ class _RevisaoFlashcardsPageState extends State<RevisaoFlashcardsPage> with Sing
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header
-            Row(
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 12,
               children: [
                 Icon(Icons.menu_book, color: Colors.blue[800], size: 36),
-                const SizedBox(width: 12),
                 const Text(
                   "Revisão e Flashcards",
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -96,24 +98,32 @@ class _RevisaoFlashcardsPageState extends State<RevisaoFlashcardsPage> with Sing
             ),
             const SizedBox(height: 24),
             // Tabs
-            TabBar(
-              controller: _tabController,
-              labelColor: Colors.blue[800],
-              unselectedLabelColor: Colors.black54,
-              indicatorColor: Colors.blue[800],
-              tabs: const [
-                Tab(text: "Revisão por Ciclos"),
-                Tab(text: "Flashcards Inteligentes"),
-              ],
+            Container(
+              width: double.infinity,
+              constraints: BoxConstraints(maxWidth: 700),
+              child: TabBar(
+                controller: _tabController,
+                labelColor: Colors.blue[800],
+                unselectedLabelColor: Colors.black54,
+                indicatorColor: Colors.blue[800],
+                tabs: const [
+                  Tab(text: "Revisão por Ciclos"),
+                  Tab(text: "Flashcards Inteligentes"),
+                ],
+              ),
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: const [
-                  RevisionCyclesWidget(),
-                  FlashcardsWidget(),
-                ],
+              child: Container(
+                width: double.infinity,
+                constraints: BoxConstraints(maxWidth: 900),
+                child: TabBarView(
+                  controller: _tabController,
+                  children: const [
+                    RevisionCyclesWidget(),
+                    FlashcardsWidget(),
+                  ],
+                ),
               ),
             ),
           ],
@@ -177,14 +187,17 @@ class _RevisionCyclesWidgetState extends State<RevisionCyclesWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Cards de progresso
-          Row(
+          Wrap(
+            spacing: 16,
+            runSpacing: 16,
             children: [
-              Expanded(
+              ConstrainedBox(
+                constraints: BoxConstraints(minWidth: 240, maxWidth: 360),
                 child: Card(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   elevation: 0.5,
                   child: Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: EdgeInsets.all(MediaQuery.of(context).size.width < 500 ? 10 : 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -203,13 +216,13 @@ class _RevisionCyclesWidgetState extends State<RevisionCyclesWidget> {
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
-              Expanded(
+              ConstrainedBox(
+                constraints: BoxConstraints(minWidth: 240, maxWidth: 360),
                 child: Card(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   elevation: 0.5,
                   child: Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: EdgeInsets.all(MediaQuery.of(context).size.width < 500 ? 10 : 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -222,13 +235,13 @@ class _RevisionCyclesWidgetState extends State<RevisionCyclesWidget> {
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
-              Expanded(
+              ConstrainedBox(
+                constraints: BoxConstraints(minWidth: 240, maxWidth: 360),
                 child: Card(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   elevation: 0.5,
                   child: Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: EdgeInsets.all(MediaQuery.of(context).size.width < 500 ? 10 : 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -336,87 +349,98 @@ class RevisaoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: getBorderColor(), width: 2),
-      ),
-      elevation: 0.5,
-      margin: const EdgeInsets.only(bottom: 18),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  revisao.disciplina,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: getBorderColor()),
-                ),
-                const SizedBox(width: 12),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: Colors.blue[50],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    revisao.tag,
-                    style: const TextStyle(fontSize: 12, color: Colors.blue),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    'Ciclo: ${revisao.ciclo}',
-                    style: const TextStyle(fontSize: 12, color: Colors.black54),
-                  ),
-                ),
-                const Spacer(),
-                Icon(getStatusIcon(), color: getStatusColor()),
-                const SizedBox(width: 4),
-                Text(
-                  getStatusText(),
-                  style: TextStyle(
-                    color: getStatusColor(),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Estudado em: ${_formatDate(revisao.estudadoEm)}',
-              style: const TextStyle(fontSize: 13, color: Colors.black87),
-            ),
-            Text(
-              'Revisar em: ${_formatDate(revisao.revisarEm)}',
-              style: const TextStyle(fontSize: 13, color: Colors.black87),
-            ),
-            if (revisao.status != 'concluida')
-              Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: ElevatedButton.icon(
-                    onPressed: onMarcarRevisada,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue[800],
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+    return ConstrainedBox(
+      constraints: BoxConstraints(minWidth: 240, maxWidth: 648),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: getBorderColor(), width: 2),
+        ),
+        elevation: 0.5,
+        margin: const EdgeInsets.only(bottom: 18),
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      revisao.disciplina,
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: getBorderColor()),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    icon: const Icon(Icons.check),
-                    label: const Text("Marcar como revisada"),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.blue[50],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      revisao.tag,
+                      style: const TextStyle(fontSize: 13, color: Colors.blue),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      'Ciclo: ${revisao.ciclo}',
+                      style: const TextStyle(fontSize: 13, color: Colors.black54),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Icon(getStatusIcon(), color: getStatusColor()),
+                  const SizedBox(width: 4),
+                  Text(
+                    getStatusText(),
+                    style: TextStyle(
+                      color: getStatusColor(),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              Text(
+                'Estudado em: ${_formatDate(revisao.estudadoEm)}',
+                style: const TextStyle(fontSize: 15, color: Colors.black87),
+              ),
+              Text(
+                'Revisar em: ${_formatDate(revisao.revisarEm)}',
+                style: const TextStyle(fontSize: 15, color: Colors.black87),
+              ),
+              if (revisao.status != 'concluida')
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: ElevatedButton.icon(
+                      onPressed: onMarcarRevisada,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue[800],
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                      ),
+                      icon: const Icon(Icons.check),
+                      label: const Text("Marcar como revisada"),
+                    ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -522,123 +546,103 @@ class _FlashcardsWidgetState extends State<FlashcardsWidget> {
     final card = flashcards[currentIndex];
     final resultado = resultados[currentIndex];
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            elevation: 2,
-            margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            child: Container(
-              width: 400,
-              padding: const EdgeInsets.all(32),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    card.disciplina,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    card.pergunta,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 24),
-                  if (mostrarResposta)
-                    Column(
-                      children: [
-                        Text(
-                          card.resposta,
-                          style: const TextStyle(fontSize: 18, color: Colors.black87),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 24),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton.icon(
-                              onPressed: () => _marcar(true),
-                              icon: const Icon(Icons.check, color: Colors.white),
-                              label: const Text('Acertei'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green[700],
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            ElevatedButton.icon(
-                              onPressed: () => _marcar(false),
-                              icon: const Icon(Icons.close, color: Colors.white),
-                              label: const Text('Errei'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red[700],
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  else
-                    ElevatedButton(
-                      onPressed: _mostrarResposta,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue[800],
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minWidth: 240, maxWidth: 360),
+        child: Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          elevation: 2,
+          margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Container(
+            padding: EdgeInsets.all(MediaQuery.of(context).size.width < 500 ? 16 : 32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  card.disciplina,
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  card.pergunta,
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                if (mostrarResposta)
+                  Column(
+                    children: [
+                      Text(
+                        card.resposta,
+                        style: const TextStyle(fontSize: 18, color: Colors.black87),
+                        textAlign: TextAlign.center,
                       ),
-                      child: const Text('Mostrar resposta'),
-                    ),
-                  if (resultado != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      const SizedBox(height: 24),
+                      Wrap(
+                        spacing: 16,
+                        runSpacing: 8,
+                        alignment: WrapAlignment.center,
                         children: [
-                          Icon(
-                            resultado ? Icons.check_circle : Icons.cancel,
-                            color: resultado ? Colors.green : Colors.red,
+                          ElevatedButton.icon(
+                            onPressed: () => _marcar(true),
+                            icon: const Icon(Icons.check, color: Colors.white),
+                            label: const Text('Acertei'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green[700],
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                            ),
                           ),
-                          const SizedBox(width: 8),
-                          Text(
-                            resultado ? 'Você acertou!' : 'Você errou',
-                            style: TextStyle(
-                              color: resultado ? Colors.green[700] : Colors.red[700],
-                              fontWeight: FontWeight.bold,
+                          ElevatedButton.icon(
+                            onPressed: () => _marcar(false),
+                            icon: const Icon(Icons.close, color: Colors.white),
+                            label: const Text('Errei'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red[700],
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                             ),
                           ),
                         ],
                       ),
+                    ],
+                  )
+                else
+                  ElevatedButton(
+                    onPressed: _mostrarResposta,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue[800],
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                     ),
-                ],
-              ),
+                    child: const Text('Mostrar resposta'),
+                  ),
+                if (resultado != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Wrap(
+                      spacing: 8,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        Icon(
+                          resultado ? Icons.check_circle : Icons.cancel,
+                          color: resultado ? Colors.green : Colors.red,
+                        ),
+                        Text(
+                          resultado ? 'Você acertou!' : 'Você errou',
+                          style: TextStyle(
+                            color: resultado ? Colors.green[700] : Colors.red[700],
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: _anterior,
-                icon: const Icon(Icons.arrow_back_ios),
-                tooltip: 'Anterior',
-              ),
-              Text(
-                '${currentIndex + 1} / ${flashcards.length}',
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              IconButton(
-                onPressed: _proximo,
-                icon: const Icon(Icons.arrow_forward_ios),
-                tooltip: 'Próximo',
-              ),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }

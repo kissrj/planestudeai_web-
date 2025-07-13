@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import '../landing_page.dart';
 
 class Header extends StatelessWidget {
   final bool showLogin;
   final bool showSignup;
   final bool showHome;
+  final GlobalKey? pricingSectionKey;
 
   const Header({
     Key? key,
     this.showLogin = true,
     this.showSignup = true,
     this.showHome = false,
+    this.pricingSectionKey,
   }) : super(key: key);
 
   void _navigate(BuildContext context, String route) {
@@ -62,7 +65,18 @@ class Header extends StatelessWidget {
                       const SizedBox(width: 24),
                       _HeaderLink(
                         text: "Planos",
-                        onTap: () => _navigate(context, '/subscription'),
+                        onTap: () {
+                          final contextSection = pricingSectionKey?.currentContext;
+                          if (contextSection != null) {
+                            Scrollable.ensureVisible(
+                              contextSection,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut,
+                            );
+                          } else {
+                            _navigate(context, '/subscription');
+                          }
+                        },
                       ),
                       const SizedBox(width: 32),
                       if (showLogin)

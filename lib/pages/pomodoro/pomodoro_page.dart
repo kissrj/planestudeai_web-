@@ -351,36 +351,39 @@ class _PomodoroPageState extends State<PomodoroPage> {
                                 SnackBar(content: Text("Tarefa selecionada: ${task.subject}")),
                               );
                             },
-                            child: Container(
-                              margin: const EdgeInsets.only(bottom: 12),
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: selectedTask == task.id ? Colors.blue[50] : Colors.white,
-                                border: Border.all(
-                                  color: selectedTask == task.id ? Colors.blue : Colors.grey[300]!,
-                                  width: 2,
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(minWidth: 240, maxWidth: 648),
+                              child: Container(
+                                margin: const EdgeInsets.only(bottom: 12),
+                                padding: EdgeInsets.all(MediaQuery.of(context).size.width < 500 ? 8 : 16),
+                                decoration: BoxDecoration(
+                                  color: selectedTask == task.id ? Colors.blue[50] : Colors.white,
+                                  border: Border.all(
+                                    color: selectedTask == task.id ? Colors.blue : Colors.grey[300]!,
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(task.subject, style: const TextStyle(fontWeight: FontWeight.bold)),
-                                      Text(task.topic, style: const TextStyle(color: Colors.grey)),
-                                    ],
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue[100],
-                                      borderRadius: BorderRadius.circular(8),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(task.subject, style: const TextStyle(fontWeight: FontWeight.bold)),
+                                        Text(task.topic, style: const TextStyle(color: Colors.grey)),
+                                      ],
                                     ),
-                                    child: Text(task.duration, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue)),
-                                  ),
-                                ],
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue[100],
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Text(task.duration, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue)),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           )).toList(),
@@ -406,68 +409,71 @@ class _PomodoroPageState extends State<PomodoroPage> {
                 clipBehavior: Clip.hardEdge,
                 child: Padding(
                   padding: const EdgeInsets.all(24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: const [
-                          Icon(Icons.bar_chart, color: Colors.blue, size: 24),
-                          SizedBox(width: 8),
-                          Text("Estatísticas", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      _buildStatRow("Pomodoros hoje", pomodorosToday),
-                      _buildStatRow("Minutos focados hoje", minutesFocusedToday),
-                      _buildStatRow("Minutos na semana", minutesFocusedThisWeek),
-                      const SizedBox(height: 24),
-                      const Text("Progresso Semanal", style: TextStyle(fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 12),
-                      SizedBox(
-                        height: 140,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: weeklyProgress.map((day) {
-                            final isToday = day["day"] == "Sex"; // Simulação
-                            final percent = (day["minutes"] as int) / maxMinutes;
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  AnimatedContainer(
-                                    duration: const Duration(milliseconds: 400),
-                                    height: 100 * percent,
-                                    width: 18,
-                                    decoration: BoxDecoration(
-                                      color: isToday ? Colors.blue[800] : Colors.blue[200],
-                                      borderRadius: BorderRadius.circular(6),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minWidth: 240, maxWidth: 648),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: const [
+                            Icon(Icons.bar_chart, color: Colors.blue, size: 24),
+                            SizedBox(width: 8),
+                            Text("Estatísticas", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        _buildStatRow("Pomodoros hoje", pomodorosToday),
+                        _buildStatRow("Minutos focados hoje", minutesFocusedToday),
+                        _buildStatRow("Minutos na semana", minutesFocusedThisWeek),
+                        const SizedBox(height: 24),
+                        const Text("Progresso Semanal", style: TextStyle(fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 12),
+                        SizedBox(
+                          height: 140,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: weeklyProgress.map((day) {
+                              final isToday = day["day"] == "Sex"; // Simulação
+                              final percent = (day["minutes"] as int) / maxMinutes;
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    AnimatedContainer(
+                                      duration: const Duration(milliseconds: 400),
+                                      height: 100 * percent,
+                                      width: 18,
+                                      decoration: BoxDecoration(
+                                        color: isToday ? Colors.blue[800] : Colors.blue[200],
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(day["day"], style: const TextStyle(fontSize: 11)),
-                                ],
-                              ),
-                            );
-                          }).toList(),
+                                    const SizedBox(height: 8),
+                                    Text(day["day"], style: const TextStyle(fontSize: 11)),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.orange[50],
-                          borderRadius: BorderRadius.circular(8),
+                        const SizedBox(height: 16),
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.orange[50],
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Text(
+                            "🔥 Você estudou 3 dias seguidos! Continue assim!",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                        child: const Text(
-                          "🔥 Você estudou 3 dias seguidos! Continue assim!",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

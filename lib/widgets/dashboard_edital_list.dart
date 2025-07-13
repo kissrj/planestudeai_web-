@@ -47,63 +47,74 @@ class DashboardEditalList extends StatelessWidget {
       (acc, cargo) => acc + cargo.disciplinas.length,
     );
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return ConstrainedBox(
+      constraints: BoxConstraints(minWidth: 240, maxWidth: 360),
+      child: Container(
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width < 500 ? 8 : 16),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey[300]!),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.start,
+          spacing: 16,
+          runSpacing: 8,
+          children: [
+            SizedBox(
+              width: 200,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    edital.nome,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Criado em: ${_formatDate(edital.createdAt)}',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.grey[600],
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (edital.dataProva != null) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      'Prova: ${_formatDate(edital.dataProva!)}',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.blue[600],
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  edital.nome,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Criado em: ${_formatDate(edital.createdAt)}',
+                  '${edital.cargos.length} cargos',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Colors.grey[600],
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
-                if (edital.dataProva != null) ...[
-                  const SizedBox(height: 2),
-                  Text(
-                    'Prova: ${_formatDate(edital.dataProva!)}',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.blue[600],
-                    ),
+                const SizedBox(height: 2),
+                Text(
+                  '$totalDisciplinas disciplinas',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.grey[600],
                   ),
-                ],
+                  overflow: TextOverflow.ellipsis,
+                ),
               ],
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                '${edital.cargos.length} cargos',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[600],
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                '$totalDisciplinas disciplinas',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[600],
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

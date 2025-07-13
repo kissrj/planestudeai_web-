@@ -214,81 +214,90 @@ class _ReviewProgressPageState extends State<ReviewProgressPage> with SingleTick
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 elevation: 1,
                 margin: const EdgeInsets.only(bottom: 24),
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Progresso do Estudo', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                          Row(
-                            children: [
-                              _legendDot(Colors.red, 'Atrasada'),
-                              const SizedBox(width: 12),
-                              _legendDot(Colors.amber, 'Em breve'),
-                              const SizedBox(width: 12),
-                              _legendDot(Colors.green, 'Concluída'),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minWidth: 240, maxWidth: 360),
+                  child: Padding(
+                    padding: EdgeInsets.all(MediaQuery.of(context).size.width < 500 ? 12 : 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: 16,
+                          runSpacing: 8,
+                          children: [
+                            const Text('Progresso do Estudo', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                            Wrap(
+                              spacing: 12,
                               children: [
-                                const Text('Progresso Geral', style: TextStyle(fontSize: 14)),
-                                const SizedBox(height: 4),
-                                LinearProgressIndicator(value: 0.52, minHeight: 8, backgroundColor: Color(0xFFE5E7EB), color: Colors.blue),
+                                _legendDot(Colors.red, 'Atrasada'),
+                                _legendDot(Colors.amber, 'Em breve'),
+                                _legendDot(Colors.green, 'Concluída'),
                               ],
                             ),
-                          ),
-                          const SizedBox(width: 12),
-                          const Text('52%', style: TextStyle(fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                      const SizedBox(height: 18),
-                      Wrap(
-                        spacing: 32,
-                        runSpacing: 12,
-                        children: disciplineProgress.take(4).map((discipline) {
-                          return SizedBox(
-                            width: 220,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(discipline['name'], style: const TextStyle(fontSize: 13)),
-                                    Text('${discipline['progress']}%', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                                  ],
-                                ),
-                                const SizedBox(height: 4),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: LinearProgressIndicator(
-                                        value: (discipline['progress'] as int) / 100,
-                                        minHeight: 6,
-                                        backgroundColor: const Color(0xFFE5E7EB),
-                                        color: Colors.blue,
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: 12,
+                          children: [
+                            SizedBox(
+                              width: 180,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Progresso Geral', style: TextStyle(fontSize: 14)),
+                                  const SizedBox(height: 4),
+                                  LinearProgressIndicator(value: 0.52, minHeight: 8, backgroundColor: Color(0xFFE5E7EB), color: Colors.blue),
+                                ],
+                              ),
+                            ),
+                            const Text('52%', style: TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                        const SizedBox(height: 18),
+                        Wrap(
+                          spacing: 32,
+                          runSpacing: 12,
+                          children: disciplineProgress.take(4).map((discipline) {
+                            return SizedBox(
+                              width: 220,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Wrap(
+                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                    spacing: 8,
+                                    children: [
+                                      Text(discipline['name'], style: const TextStyle(fontSize: 13), overflow: TextOverflow.ellipsis),
+                                      Text('${discipline['progress']}%', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Wrap(
+                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                    spacing: 8,
+                                    children: [
+                                      SizedBox(
+                                        width: 100,
+                                        child: LinearProgressIndicator(
+                                          value: (discipline['progress'] as int) / 100,
+                                          minHeight: 6,
+                                          backgroundColor: const Color(0xFFE5E7EB),
+                                          color: Colors.blue,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text('${discipline['topicsCompleted']}/${discipline['topics']}', style: const TextStyle(fontSize: 11, color: Colors.grey)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ],
+                                      Text('${discipline['topicsCompleted']}/${discipline['topics']}', style: const TextStyle(fontSize: 11, color: Colors.grey), overflow: TextOverflow.ellipsis),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -302,27 +311,28 @@ class _ReviewProgressPageState extends State<ReviewProgressPage> with SingleTick
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 16,
+                        runSpacing: 8,
                         children: [
-                          Expanded(
-                            child: Text('Suas Revisões', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                          SizedBox(
+                            width: 200,
+                            child: Text('Suas Revisões', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18), overflow: TextOverflow.ellipsis),
                           ),
-                          Flexible(
-                            fit: FlexFit.loose,
-                            child: Container(
-                              constraints: BoxConstraints(maxWidth: 400),
-                              child: TabBar(
-                                controller: _tabController,
-                                labelColor: Colors.blue,
-                                unselectedLabelColor: Colors.black54,
-                                indicatorColor: Colors.blue,
-                                tabs: const [
-                                  Tab(text: 'Pendentes'),
-                                  Tab(text: 'Concluídas'),
-                                ],
-                                onTap: (index) => setState(() => activeTab = index),
-                              ),
+                          Container(
+                            width: 400,
+                            constraints: BoxConstraints(maxWidth: 400),
+                            child: TabBar(
+                              controller: _tabController,
+                              labelColor: Colors.blue,
+                              unselectedLabelColor: Colors.black54,
+                              indicatorColor: Colors.blue,
+                              tabs: const [
+                                Tab(text: 'Pendentes'),
+                                Tab(text: 'Concluídas'),
+                              ],
+                              onTap: (index) => setState(() => activeTab = index),
                             ),
                           ),
                         ],
@@ -341,28 +351,30 @@ class _ReviewProgressPageState extends State<ReviewProgressPage> with SingleTick
                                     separatorBuilder: (_, __) => const Divider(),
                                     itemBuilder: (context, i) {
                                       final review = pendingReviews[i];
-                                      return Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                      return Wrap(
+                                        crossAxisAlignment: WrapCrossAlignment.start,
+                                        spacing: 10,
+                                        runSpacing: 8,
                                         children: [
                                           getStatusIcon(review['status']),
-                                          const SizedBox(width: 10),
-                                          Flexible(
+                                          SizedBox(
+                                            width: 220,
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                Row(
+                                                Wrap(
+                                                  spacing: 8,
                                                   children: [
-                                                    Text(review['subject'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                                                    Text(review['subject'], style: const TextStyle(fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                                                     getStatusBadge(review['status']),
                                                     _badge('Revisão ${review['reviewType']}', Colors.blue),
                                                   ],
                                                 ),
-                                                Text(review['topic'], style: const TextStyle(color: Colors.grey)),
-                                                Text('Estudado em: ${review['originalStudyDate']} | Revisão até: ${review['dueDate']}', style: const TextStyle(fontSize: 11, color: Colors.grey)),
+                                                Text(review['topic'], style: const TextStyle(color: Colors.grey), overflow: TextOverflow.ellipsis),
+                                                Text('Estudado em:  ${review['originalStudyDate']} | Revisão até: ${review['dueDate']}', style: const TextStyle(fontSize: 11, color: Colors.grey), overflow: TextOverflow.ellipsis),
                                               ],
                                             ),
                                           ),
-                                          const SizedBox(width: 10),
                                           ElevatedButton(
                                             onPressed: () => handleMarkComplete(review['id']),
                                             style: ElevatedButton.styleFrom(
@@ -384,28 +396,30 @@ class _ReviewProgressPageState extends State<ReviewProgressPage> with SingleTick
                                     separatorBuilder: (_, __) => const Divider(),
                                     itemBuilder: (context, i) {
                                       final review = completedReviews[i];
-                                      return Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                      return Wrap(
+                                        crossAxisAlignment: WrapCrossAlignment.start,
+                                        spacing: 10,
+                                        runSpacing: 8,
                                         children: [
                                           const Icon(Icons.check_circle, color: Colors.green, size: 22),
-                                          const SizedBox(width: 10),
-                                          Flexible(
+                                          SizedBox(
+                                            width: 220,
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                Row(
+                                                Wrap(
+                                                  spacing: 8,
                                                   children: [
-                                                    Text(review['subject'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                                                    Text(review['subject'], style: const TextStyle(fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                                                     _badge('Concluída', Colors.green),
                                                     _badge('Revisão ${review['reviewType']}', Colors.blue),
                                                   ],
                                                 ),
-                                                Text(review['topic'], style: const TextStyle(color: Colors.grey)),
-                                                Text('Estudado em: ${review['originalStudyDate']} | Revisado em: ${review['completedDate']}', style: const TextStyle(fontSize: 11, color: Colors.grey)),
+                                                Text(review['topic'], style: const TextStyle(color: Colors.grey), overflow: TextOverflow.ellipsis),
+                                                Text('Estudado em: ${review['originalStudyDate']} | Revisado em: ${review['completedDate']}', style: const TextStyle(fontSize: 11, color: Colors.grey), overflow: TextOverflow.ellipsis),
                                               ],
                                             ),
                                           ),
-                                          const SizedBox(width: 10),
                                           OutlinedButton(
                                             onPressed: null,
                                             style: OutlinedButton.styleFrom(
@@ -430,44 +444,47 @@ class _ReviewProgressPageState extends State<ReviewProgressPage> with SingleTick
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 elevation: 1,
                 margin: const EdgeInsets.only(bottom: 24),
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Progresso por Disciplina', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                      const SizedBox(height: 18),
-                      ...disciplineProgress.map((discipline) => Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(discipline['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
-                                Text('${discipline['progress']}%', style: const TextStyle(fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: LinearProgressIndicator(
-                                    value: (discipline['progress'] as int) / 100,
-                                    minHeight: 8,
-                                    backgroundColor: const Color(0xFFE5E7EB),
-                                    color: Colors.blue[900],
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minWidth: 220, maxWidth: 500),
+                  child: Padding(
+                    padding: EdgeInsets.all(MediaQuery.of(context).size.width < 500 ? 12 : 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Progresso por Disciplina', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                        const SizedBox(height: 18),
+                        ...disciplineProgress.map((discipline) => Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(discipline['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  Text('${discipline['progress']}%', style: const TextStyle(fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: LinearProgressIndicator(
+                                      value: (discipline['progress'] as int) / 100,
+                                      minHeight: 8,
+                                      backgroundColor: const Color(0xFFE5E7EB),
+                                      color: Colors.blue[900],
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 8),
-                                Text('${discipline['topicsCompleted']}/${discipline['topics']} tópicos', style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                              ],
-                            ),
-                          ],
-                        ),
-                      )),
-                    ],
+                                  const SizedBox(width: 8),
+                                  Text('${discipline['topicsCompleted']}/${discipline['topics']} tópicos', style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )),
+                      ],
+                    ),
                   ),
                 ),
               ),
